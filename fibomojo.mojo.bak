@@ -1,0 +1,23 @@
+from std.python import PythonObject
+from std.python.bindings import PythonModuleBuilder
+from std.os import abort
+
+
+def fib(n: UInt) -> UInt:
+    if n <= 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+
+@export
+def PyInit_fibomojo() abi("C") -> PythonObject:
+    try:
+        var m = PythonModuleBuilder("fibomojo")
+        m.def_function[fibmojo]("fibmojo", docstring="Рекурсивная реализация функции Фибоначчи.")
+        return m.finalize()
+    except e:
+        abort(String("Ошибка при создании модуля Mojo для Python:", e))
+
+
+def fibmojo(py_obj: PythonObject) raises -> PythonObject:
+    return fib(UInt(py=py_obj))
