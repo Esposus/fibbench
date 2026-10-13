@@ -1,10 +1,21 @@
 # fibbench
 
 
-### Собрать проект
+### Создать виртуальное окрежение Python
 ```python
 uv sync
 ```
+
+### Скомпилировать Mojo
+```bash
+uv run mojo build fib_mojo/src/bindings.mojo -I fib_mojo/src --emit shared-lib -o fib_mojo/_native.so
+```
+
+### Скомпилировать Rust
+```bash
+cd fibbers && maturin develop --release && cd ..
+```
+
 ### Запустить
 ```python
 uv run main.py 20
